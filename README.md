@@ -361,7 +361,7 @@ This project is executed in **5 phases**, each containing a set of clear deploym
    <img width="977" height="625" alt="image" src="https://github.com/user-attachments/assets/089254bf-7d39-412e-b902-1e78ab055aae" />
    <img width="977" height="630" alt="image" src="https://github.com/user-attachments/assets/bb73e94d-9447-49dc-9cb9-c42fec0288bc" />
 
-5. 
+5. Copy the `frontend_url` to validate
 
 ---
 
@@ -369,13 +369,18 @@ This project is executed in **5 phases**, each containing a set of clear deploym
 
 ### Task-1: Verification
 
-1. 
-terraform destroy
-<img width="975" height="514" alt="image" src="https://github.com/user-attachments/assets/37fef743-5b11-4922-86e7-003b2f902b75" />
-<img width="975" height="514" alt="image" src="https://github.com/user-attachments/assets/507c1884-649e-44cb-8ec2-bc8fe71185a5" />
+1. Open the browser and paste the frontend_url and check all the pages
 
-verification
-<img width="1710" height="1072" alt="image" src="https://github.com/user-attachments/assets/27a0c2a2-60d6-4e3e-a571-7fae703e17ac" />
-<img width="1710" height="1072" alt="image" src="https://github.com/user-attachments/assets/2e32de07-0c23-4c40-ba50-36d8e35930ab" />
-<img width="1710" height="1072" alt="image" src="https://github.com/user-attachments/assets/222f9f0b-9c7c-4c62-926d-652e9a5222e8" />
-<img width="1710" height="1072" alt="image" src="https://github.com/user-attachments/assets/001ac79d-a7a7-42b5-b2d0-be56632a0e4d" />
+   <img width="1710" height="1072" alt="image" src="https://github.com/user-attachments/assets/27a0c2a2-60d6-4e3e-a571-7fae703e17ac" />
+   <img width="1710" height="1072" alt="image" src="https://github.com/user-attachments/assets/2e32de07-0c23-4c40-ba50-36d8e35930ab" />
+   <img width="1710" height="1072" alt="image" src="https://github.com/user-attachments/assets/222f9f0b-9c7c-4c62-926d-652e9a5222e8" />
+   <img width="1710" height="1072" alt="image" src="https://github.com/user-attachments/assets/001ac79d-a7a7-42b5-b2d0-be56632a0e4d" />
+
+2. Once verification is done, destroy the terraform resources using the below command
+
+   ```sh
+   terraform destroy --var-file=terraform.tfvars --auto-approv
+   ```
+   
+   <img width="975" height="514" alt="image" src="https://github.com/user-attachments/assets/37fef743-5b11-4922-86e7-003b2f902b75" />
+   <img width="975" height="514" alt="image" src="https://github.com/user-attachments/assets/507c1884-649e-44cb-8ec2-bc8fe71185a5" />

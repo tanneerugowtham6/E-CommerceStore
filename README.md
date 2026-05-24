@@ -43,13 +43,18 @@ This project is executed in **5 phases**, each containing a set of clear deploym
 
 ---
 
-## Phase 1: Local Environment Setup 
+## Phase 1: Prerequisites Setup 
 
+### Task-1: Install AWS CLI
 
-curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-sudo apt update && sudo apt install unzip -y
-sudo ./aws/install
-aws --version
+1. Login to the machine which will be used (For this task a Ubuntu server has been used)
+
+   ```
+   curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+   sudo apt update && sudo apt install unzip -y
+   sudo ./aws/install
+   aws --version
+   ```
 
 
 sudo apt-get install -y gnupg software-properties-common

@@ -127,10 +127,52 @@ docker --version
    E-CommerceStore\frontend\
    ```
 
+.env in frontend
+<img width="492" height="87" alt="image" src="https://github.com/user-attachments/assets/ee37ebef-7be3-4623-ac1f-632d01a2d34a" />
+
+
 ---
 
 ## Phase 3: Build and Push Docker images
 
 ### Task-1: Build Docker images for Backend
 
+user-service
+<img width="1685" height="339" alt="image" src="https://github.com/user-attachments/assets/df97791e-879d-4368-85aa-9d9554eab2e7" />
 
+product-service
+<img width="1685" height="339" alt="image" src="https://github.com/user-attachments/assets/3cf1c7a6-6c3d-4715-8614-894897ee80c4" />
+
+cart-service
+<img width="1685" height="339" alt="image" src="https://github.com/user-attachments/assets/46fa18aa-4b12-4560-a2cb-fcac4540368a" />
+
+order-service
+<img width="1685" height="337" alt="image" src="https://github.com/user-attachments/assets/db1d2763-d07a-443c-8deb-c21261fac695" />
+
+frontend
+<img width="1685" height="616" alt="image" src="https://github.com/user-attachments/assets/d8b5fe64-48e5-49ae-9cbd-5dd66059f852" />
+
+Confirm images exists
+<img width="1685" height="128" alt="image" src="https://github.com/user-attachments/assets/f12ac811-3a90-4958-b9c1-2e08559e1d07" />
+
+Test Locally
+
+Docker network
+<img width="566" height="48" alt="image" src="https://github.com/user-attachments/assets/de88010c-0ad6-42b7-94e8-7f523e19330a" />
+
+Run containers locally
+<img width="1681" height="209" alt="image" src="https://github.com/user-attachments/assets/b3e7b2a7-04fe-4c36-8275-ad65e419c603" />
+
+Check containers status
+<img width="1470" height="113" alt="image" src="https://github.com/user-attachments/assets/da2f8188-c48a-4573-84f6-59280b3b1d7c" />
+
+terraform init
+<img width="568" height="269" alt="image" src="https://github.com/user-attachments/assets/ba2d84d6-c158-4d23-9fee-fdecce0cfdbc" />
+
+terraform plan
+<img width="981" height="387" alt="image" src="https://github.com/user-attachments/assets/ecd1a512-adf6-42ca-b424-28d0862f55bd" />
+<img width="1051" height="790" alt="image" src="https://github.com/user-attachments/assets/6db9dd7a-4f56-4a19-b70c-23e12d82cd13" />
+
+terraform apply
+<img width="977" height="625" alt="image" src="https://github.com/user-attachments/assets/089254bf-7d39-412e-b902-1e78ab055aae" />
+<img width="977" height="630" alt="image" src="https://github.com/user-attachments/assets/bb73e94d-9447-49dc-9cb9-c42fec0288bc" />

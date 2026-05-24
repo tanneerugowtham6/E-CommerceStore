@@ -1,3 +1,3 @@
-instance_type = "t2.large"
-key_pair_name = "commerce-key-pair"
+instance_type = "t3.medium"
+key_pair_name = "ecommerce-key-pair"
 aws_region    = "us-east-1"

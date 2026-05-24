@@ -15,3 +15,25 @@ variable "key_pair_name" {
   type        = string
   default     = "ecommerce-key-pair"
 }
+
+variable "ami_id" {
+  description = "The AMI ID for the EC2 instance"
+  type        = string
+}
+
+variable "dockerhub_username" {
+  description = "Docker Hub username for pulling images"
+  type        = string
+}
+
+variable "mongo_uri" {
+  description = "MongoDB URI for the application to connect to"
+  type        = string
+  sensitive   = true
+}
+
+variable "jwt_secret" {
+  description = "Secret key for JWT authentication"
+  type        = string
+  sensitive   = true
+}

@@ -1,5 +1,7 @@
 resource "aws_vpc" "virtual_network" {
   cidr_block = "10.0.0.0/16"
+  enable_dns_support   = true
+  enable_dns_hostnames = true
 }
 
 resource "aws_subnet" "public_subnet" {
@@ -29,6 +31,7 @@ resource "aws_route_table_association" "rt_association" {
 
 resource "aws_security_group" "ecommerce_sg" {
   name   = "ecommerce-sg"
+  description = "Security group for E-commerce application"
   vpc_id = aws_vpc.virtual_network.id
 
   ingress {
@@ -39,9 +42,9 @@ resource "aws_security_group" "ecommerce_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
   ingress {
-    description = "Allow Frontend"
-    from_port   = 3000
-    to_port     = 3000
+    description = "HTTP-Frontend"
+    from_port   = 80
+    to_port     = 80
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
@@ -62,53 +65,19 @@ resource "aws_security_group" "ecommerce_sg" {
 }
 
 resource "aws_instance" "ecommerce_instance" {
-  ami             = "ami-05cf1e9f73fbad2e2" # Ubuntu Server 24.04 LTS
+  ami             = var.ami_id
   instance_type   = var.instance_type
   subnet_id       = aws_subnet.public_subnet.id
   security_groups = [aws_security_group.ecommerce_sg.id]
   key_name        = var.key_pair_name
-  user_data       = <<-EOF
-                #!/bin/bash
-                apt update -y
-                apt install docker.io -y
-                systemctl start docker
-                usermod -aG docker ubuntu
-                docker network create ecommerce-network
-                docker pull gowthamtanneeru/ecommerce_app:user-service
-                docker pull gowthamtanneeru/ecommerce_app:product-service
-                docker pull gowthamtanneeru/ecommerce_app:cart-service
-                docker pull gowthamtanneeru/ecommerce_app:order-service
-                docker pull gowthamtanneeru/ecommerce_app:frontend
-
-                docker run -d \
-                --name user-service \
-                --network ecommerce-network \
-                -p 3001:3001 \
-                gowthamtanneeru/ecommerce_app:user-service
-
-                docker run -d \
-                --name product-service \
-                --network ecommerce-network \
-                -p 3002:3002 \
-                gowthamtanneeru/ecommerce_app:product-service
-
-                docker run -d \
-                --name cart-service \
-                --network ecommerce-network \
-                -p 3003:3003 \
-                gowthamtanneeru/ecommerce_app:cart-service
-
-                docker run -d \
-                --name order-service \
-                --network ecommerce-network \
-                -p 3004:3004 \
-                gowthamtanneeru/ecommerce_app:order-service
-
-                docker run -d \
-                --name frontend \
-                --network ecommerce-network \
-                -p 3000:3000 \
-                gowthamtanneeru/ecommerce_app:frontend
-
-                EOF
+  root_block_device {
+    volume_size = 30
+    volume_type = "gp2"
+    delete_on_termination = true
+  }
+  user_data = templatefile("${path.module}/user_data.sh", {
+    dockerhub_username = var.dockerhub_username
+    mongo_uri          = var.mongo_uri
+    jwt_secret         = var.jwt_secret
+  })
 }

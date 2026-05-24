@@ -75,7 +75,7 @@ resource "aws_instance" "ecommerce_instance" {
     volume_type = "gp2"
     delete_on_termination = true
   }
-  user_data = templatefile("${path.module}/user_data.sh", {
+  user_data = templatefile("${path.module}/user-data.sh", {
     dockerhub_username = var.dockerhub_username
     mongo_uri          = var.mongo_uri
     jwt_secret         = var.jwt_secret

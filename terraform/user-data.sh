@@ -24,6 +24,13 @@ systemctl enable docker
 usermod -aG docker ubuntu
 echo "Docker installed and configured successfully with $(docker --version)"
 
+echo "=== Waiting for Docker daemon to be ready ==="
+while ! docker info > /dev/null 2>&1; do
+  echo "Docker not ready yet, waiting 5 seconds..."
+  sleep 5
+done
+echo "=== Docker daemon is ready ==="
+
 # Create Docker Network
 docker network create ecommerce-net
 

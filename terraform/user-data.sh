@@ -107,6 +107,10 @@ docker run -d \
 --network ecommerce-net \
 --restart unless-stopped \
 -p 80:80 \
+-e REACT_APP_USER_SERVICE_URL=http://$PUBLIC_IP:3001 \
+-e REACT_APP_PRODUCT_SERVICE_URL=http://$PUBLIC_IP:3002 \
+-e REACT_APP_CART_SERVICE_URL=http://$PUBLIC_IP:3003 \
+-e REACT_APP_ORDER_SERVICE_URL=http://$PUBLIC_IP:3004 \
 $DHUSER/ecommerce-frontend:latest
 
 echo "Frontend container started successfully"

@@ -126,3 +126,11 @@ docker --version
    ```
    E-CommerceStore\frontend\
    ```
+
+---
+
+## Phase 3: Build and Push Docker images
+
+### Task-1: Build Docker images for Backend
+
+

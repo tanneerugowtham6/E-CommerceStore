@@ -52,6 +52,7 @@ This project is executed in **5 phases**, each containing a set of clear deploym
    ```
    curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
    sudo apt update && sudo apt install unzip -y
+   unzip awscliv2.zip
    sudo ./aws/install
    aws --version
    ```
@@ -71,6 +72,7 @@ This project is executed in **5 phases**, each containing a set of clear deploym
    sudo tee /etc/apt/sources.list.d/hashicorp.list
    
    sudo apt-get update && sudo apt-get install terraform -y
+   ```
 
 ### Task-3: Install Docker
 
@@ -90,6 +92,12 @@ This project is executed in **5 phases**, each containing a set of clear deploym
 
    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | \
    sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+
+   echo \
+     "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] \
+     https://download.docker.com/linux/ubuntu \
+     $(lsb_release -cs) stable" | \
+     sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
    
    sudo apt update
    sudo apt install -y \
@@ -126,7 +134,7 @@ This project is executed in **5 phases**, each containing a set of clear deploym
 
     <img width="513" height="91" alt="image" src="https://github.com/user-attachments/assets/28f40b1f-32dc-49dd-b2bd-eb19f26a4bd1" />
 
-6. Once created, Connect to <your-cluster-name> window will be popped up. Click on **Compass**
+6. Once created, Connect to <your-cluster-name> window will be popped up. Click on **Compass** under Access your data through tools
 
     <img width="829" height="838" alt="image" src="https://github.com/user-attachments/assets/6d52e18a-926b-45b5-b895-5edfa52041f7" />
 
@@ -158,6 +166,9 @@ This project is executed in **5 phases**, each containing a set of clear deploym
 
     <img width="1433" height="109" alt="image" src="https://github.com/user-attachments/assets/79fa3f63-ad1f-4760-a9df-514639826637" />
     <img width="613" height="474" alt="image" src="https://github.com/user-attachments/assets/7b815764-4fc2-4120-b5a6-864d89727cb6" />
+
+   > [!NOTE]
+   > Enter 0.0.0.0/0 to allow access from all IPs (suitable for this lab/demo setup). In production, restrict this to specific IP addresses only.
 
 14. Click on **Save Changes**
 
@@ -213,12 +224,27 @@ This project is executed in **5 phases**, each containing a set of clear deploym
    E-CommerceStore\frontend\
    ```
 
-.env in frontend
-<img width="492" height="87" alt="image" src="https://github.com/user-attachments/assets/ee37ebef-7be3-4623-ac1f-632d01a2d34a" />
+### Task-4: Create env file for Frontend
 
-### Task-4: Create entrypoint.sh
+1. Create .env file using the below command
 
-1. For the frontend application, using a shell script Set placeholder values instead of real IPs, this script replaces the placeholders with the actual env var values passed via `-e` at the container start. Refere to the `entrypoint.sh` file in `E-Commercer\frontend\` folder.
+   ```sh
+   nano ./E-Commerce/frontend/.env
+   ```
+
+   ```sh
+   REACT_APP_USER_SERVICE_URL=PLACEHOLDER_USER_URL
+   REACT_APP_PRODUCT_SERVICE_URL=PLACEHOLDER_PRODUCT_URL
+   REACT_APP_CART_SERVICE_URL=PLACEHOLDER_CART_URL
+   REACT_APP_ORDER_SERVICE_URL=PLACEHOLDER_ORDER_URL
+   ```
+
+> [!NOTE]
+> Placeholder values are used instead of real IPs so the same Docker image works on any server. The `entrypoint.sh` script replaces these placeholders with the actual server IP at container startup via the `-e` flags passed during `docker run`
+
+### Task-5: Create entrypoint.sh
+
+1. For the frontend application, using a shell script Set placeholder values instead of real IPs, this script replaces the placeholders with the actual env var values passed via `-e` at the container start. Refer to the `entrypoint.sh` file in `E-Commercer\frontend\` folder.
 
 ---
 
@@ -251,7 +277,7 @@ This project is executed in **5 phases**, each containing a set of clear deploym
    **Order Service**
    <img width="1685" height="337" alt="image" src="https://github.com/user-attachments/assets/db1d2763-d07a-443c-8deb-c21261fac695" />
 
-### Task-2: Build Docker images for Backend
+### Task-2: Build Docker images for Frontend
 
 1. Navigate the below paths and build the docker images using the below command
 
@@ -303,6 +329,36 @@ This project is executed in **5 phases**, each containing a set of clear deploym
    
    <img width="1470" height="113" alt="image" src="https://github.com/user-attachments/assets/da2f8188-c48a-4573-84f6-59280b3b1d7c" />
 
+2. Once testing is complete, stop and clean up local containers
+
+   ```sh
+   docker stop user-service product-service cart-service order-service frontend
+   docker rm user-service product-service cart-service order-service frontend
+   docker network rm ecommerce-net
+   ```
+
+### Task-6: Push Docker Images to DockerHub
+
+1. Login to DockerHub using the below command
+
+   ```sh
+   docker login
+   ```
+
+2. Push all 5 images
+
+   ```sh
+   docker push <dockerhub_username>/ecommerce-user-service:latest
+   docker push <dockerhub_username>/ecommerce-product-service:latest
+   docker push <dockerhub_username>/ecommerce-cart-service:latest
+   docker push <dockerhub_username>/ecommerce-order-service:latest
+   docker push <dockerhub_username>/ecommerce-frontend:latest
+   ```
+
+3. Verify at `https://hub.docker.com/repositories` that all 5 images appear
+
+   <img width="1710" height="520" alt="image" src="https://github.com/user-attachments/assets/e00e4c9d-5720-4a54-b9fd-b161bec41795" />
+
 ---
 
 ## Phase 4: Terraform Configuration
@@ -321,6 +377,9 @@ This project is executed in **5 phases**, each containing a set of clear deploym
       |_ terraform.tfvars
       |_ user-data.sh
    ```
+
+   > [!NOTE]
+   > `providers.tf` contains the AWS provider configuration including the region. This tells Terraform which cloud provider to use.
 
    > [!NOTE]
    > All these files exists in this repository except `terraform.tfvars`, make sure all the below variables to be passed through `terraform.tfvars` file

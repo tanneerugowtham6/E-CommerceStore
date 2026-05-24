@@ -26,7 +26,7 @@ variable "dockerhub_username" {
   type        = string
 }
 
-variable "mongo_uri" {
+variable "mongodb_uri" {
   description = "MongoDB URI for the application to connect to"
   type        = string
   sensitive   = true

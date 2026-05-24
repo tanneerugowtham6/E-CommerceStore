@@ -46,7 +46,7 @@ docker run -d \
 --network ecommerce-net \
 -p 3001:3001 \
 -e PORT=3001 \
--e MONGODB_URI="${mongodb_uri}/ecommerce_users" \
+-e MONGODB_URI="${mongo_uri}/ecommerce_users" \
 -e JWT_SECRET="${jwt_secret}" \
 $DHUSER/ecommerce-user-service:latest
 

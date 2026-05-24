@@ -1,8 +1,8 @@
-# E-Commerce Microservices Application
+# E-Commerce Microservices Application — Docker & Terraform Deployment on AWS
 
 ---
 
-This project is A full-stack MERN e-commerce application built with microservices architecture, featuring 4 separate Node.js backend services and a React frontend.
+This project demonstrates containerizing and deploying a full-stack MERN e-commerce application on AWS using Docker and Terraform. The application follows a microservices architecture with 4 independent Node.js backend services and a React frontend, each running as a separate Docker container on an EC2 instance provisioned entirely through Terraform.
 
 ---
 
@@ -21,6 +21,12 @@ This project is executed in **5 phases**, each containing a set of clear deploym
 ---
 
 ## Environment
+
+### Cloud Platform
+- AWS
+
+### Operating System  
+- OS: Ubuntu 22.04 LTS
 
 ### Services
 - Docker
@@ -394,7 +400,15 @@ This project is executed in **5 phases**, each containing a set of clear deploym
    jwt_secret         = <any-secret-key>
    ```
 
-2. Once all the files were created, initialize terraform in `terraform` directory
+2. Configure AWS credentials using the below command
+
+   ```sh
+   # Configure AWS credentials before initializing
+   aws configure
+   # Enter: AWS Access Key ID, Secret Access Key, Region, Output format
+   ```
+   
+3. Once all the files were created, initialize terraform in `terraform` directory
 
    ```sh
    terraform init
@@ -402,7 +416,7 @@ This project is executed in **5 phases**, each containing a set of clear deploym
 
    <img width="568" height="269" alt="image" src="https://github.com/user-attachments/assets/ba2d84d6-c158-4d23-9fee-fdecce0cfdbc" />
 
-3. Plan the terraform configuration
+4. Plan the terraform configuration
 
    ```sh
    terraform plan --var-file=terraform.tfvars
@@ -411,14 +425,20 @@ This project is executed in **5 phases**, each containing a set of clear deploym
    <img width="981" height="387" alt="image" src="https://github.com/user-attachments/assets/ecd1a512-adf6-42ca-b424-28d0862f55bd" />
    <img width="1051" height="790" alt="image" src="https://github.com/user-attachments/assets/6db9dd7a-4f56-4a19-b70c-23e12d82cd13" />
 
-4. Apply the terraform configuration
+5. Apply the terraform configuration
 
    ```sh
    terraform apply --var-file=terraform.tfvars --auto-approve
    ```
-   
+
+   > [!NOTE]
+   > After terraform apply completes, wait 4-5 minutes before accessing the frontend URL. The EC2 instance needs time to install Docker, pull the images, and start all containers automatically via the user-data script.
+
    <img width="977" height="625" alt="image" src="https://github.com/user-attachments/assets/089254bf-7d39-412e-b902-1e78ab055aae" />
    <img width="977" height="630" alt="image" src="https://github.com/user-attachments/assets/bb73e94d-9447-49dc-9cb9-c42fec0288bc" />
+
+   > [!NOTE]
+   > The `--auto-approve` flag skips the interactive approval step. Remove this flag if you want to review the plan before applying.
 
 5. Copy the `frontend_url` to validate
 
@@ -428,17 +448,31 @@ This project is executed in **5 phases**, each containing a set of clear deploym
 
 ### Task-1: Verification
 
-1. Open the browser and paste the frontend_url and check all the pages
+1. Check the health of all the services
+
+   ```sh
+   # Verify all services are running
+   curl http://<frontend_ip>/
+   curl http://<frontend_ip>:3001/health
+   curl http://<frontend_ip>:3002/health
+   curl http://<frontend_ip>:3003/health
+   curl http://<frontend_ip>:3004/health
+   ```
+   
+2. Open the browser and paste the frontend_url and check all the pages
 
    <img width="1710" height="1072" alt="image" src="https://github.com/user-attachments/assets/27a0c2a2-60d6-4e3e-a571-7fae703e17ac" />
    <img width="1710" height="1072" alt="image" src="https://github.com/user-attachments/assets/2e32de07-0c23-4c40-ba50-36d8e35930ab" />
    <img width="1710" height="1072" alt="image" src="https://github.com/user-attachments/assets/222f9f0b-9c7c-4c62-926d-652e9a5222e8" />
    <img width="1710" height="1072" alt="image" src="https://github.com/user-attachments/assets/001ac79d-a7a7-42b5-b2d0-be56632a0e4d" />
 
-2. Once verification is done, destroy the terraform resources using the below command
+   > [!NOTE]
+   > The Products page shows "No products found" because the database is empty. This confirms the frontend is successfully connected to the product service. Products would appear once added via the API or admin interface.
+
+3. Once verification is done, destroy the terraform resources using the below command
 
    ```sh
-   terraform destroy --var-file=terraform.tfvars --auto-approv
+   terraform destroy --var-file=terraform.tfvars --auto-approve
    ```
    
    <img width="975" height="514" alt="image" src="https://github.com/user-attachments/assets/37fef743-5b11-4922-86e7-003b2f902b75" />

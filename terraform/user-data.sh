@@ -57,7 +57,7 @@ docker run -d \
 --network ecommerce-net \
 -p 3002:3002 \
 -e PORT=3002 \
--e MONGODB_URI="${mongodb_uri}/ecommerce_products" \
+-e MONGODB_URI="${mongo_uri}/ecommerce_products" \
 $DHUSER/ecommerce_product-service:latest
 
 echo "Product Service container started successfully"
@@ -67,7 +67,7 @@ docker run -d \
 --network ecommerce-net \
 -p 3003:3003 \
 -e PORT=3003 \
--e MONGODB_URI="${mongodb_uri}/ecommerce_carts" \
+-e MONGODB_URI="${mongo_uri}/ecommerce_carts" \
 -e PRODUCT_SERVICE_URL=http://product-service:3002 \
 $DHUSER/ecommerce_cart-service:latest
 
@@ -78,7 +78,7 @@ docker run -d \
 --network ecommerce-net \
 -p 3004:3004 \
 -e PORT=3004 \
--e MONGODB_URI="${mongodb_uri}/ecommerce_orders" \
+-e MONGODB_URI="${mongo_uri}/ecommerce_orders" \
 -e CART_SERVICE_URL=http://cart-service:3003 \
 -e PRODUCT_SERVICE_URL=http://product-service:3002 \
 -e USER_SERVICE_URL=http://user-service:3001 \

@@ -182,6 +182,9 @@ terraform apply
 <img width="977" height="625" alt="image" src="https://github.com/user-attachments/assets/089254bf-7d39-412e-b902-1e78ab055aae" />
 <img width="977" height="630" alt="image" src="https://github.com/user-attachments/assets/bb73e94d-9447-49dc-9cb9-c42fec0288bc" />
 
+terraform destroy
+<img width="975" height="514" alt="image" src="https://github.com/user-attachments/assets/37fef743-5b11-4922-86e7-003b2f902b75" />
+<img width="975" height="514" alt="image" src="https://github.com/user-attachments/assets/507c1884-649e-44cb-8ec2-bc8fe71185a5" />
 
 verification
 <img width="1710" height="1072" alt="image" src="https://github.com/user-attachments/assets/27a0c2a2-60d6-4e3e-a571-7fae703e17ac" />
